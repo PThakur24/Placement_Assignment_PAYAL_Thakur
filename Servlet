@@ -1,1 +1,56 @@
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+public class SixteenQue extends HttpServlet {
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        // Get or create the session object
+        HttpSession session = request.getSession(true);
+
+        // Check if the user's name is already stored in the session
+        String name = (String) session.getAttribute("name");
+
+        // Check if the user's name is provided in the request parameters
+        String newName = request.getParameter("name");
+        if (newName != null && !newName.isEmpty()) {
+            // Store the user's name in the session
+            session.setAttribute("name", newName);
+            name = newName;
+        }
+
+        out.println("<html>");
+        out.println("<head>");
+        out.println("<title>User Session Example</title>");
+        out.println("</head>");
+        out.println("<body>");
+
+        out.println("<h1>User Session Example</h1>");
+
+        if (name != null) {
+            out.println("<p>Welcome, " + name + "!</p>");
+            out.println("<p>Your name is stored in the session.</p>");
+            out.println("<p><a href=\"page2\">Go to Page 2</a></p>");
+            out.println("<p><a href=\"page3\">Go to Page 3</a></p>");
+        } else {
+            out.println("<form action=\"\" method=\"GET\">");
+            out.println("<label for=\"name\">Enter your name:</label>");
+            out.println("<input type=\"text\" name=\"name\">");
+            out.println("<input type=\"submit\" value=\"Submit\">");
+            out.println("</form>");
+        }
+
+        out.println("</body>");
+        out.println("</html>");
+    }
+}
 
